@@ -213,34 +213,56 @@
         height: auto;
         margin-top: 10px;
     }
-    
-    .hamburger-menu {
-        display: none; /* Hide the hamburger menu by default */
-    }
 
     .close-btn {
-        display: none; /* Hide by default */
-        cursor: pointer;
+        display: none;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 30px;
         color: white;
-        font-size: 24px;
-        margin-right: 20px; /* Adjust as needed */
+        cursor: pointer;
+        z-index: 10000;
     }
+
+    .nav-active ~ .close-btn {
+        display: block;
+    }
+    
+    
+    
     
     /* Media query for smaller screens */
     @media screen and (max-width: 768px) {
+        /* Hide or disable the second sub-menu */
+        nav ul ul {
+            display: none !important; /* Completely hide the sub-menu */
+        }
+
         /* Show the hamburger menu */
         .hamburger-menu {
             display: block;
             cursor: pointer; /* Change cursor to pointer for better indication of interactivity */
+            position: absolute; /* Allows precise placement */
+            top: 20px; /* Align it vertically with the close button */
+            right: 20px; /* Align it horizontally with the close button */
+            cursor: pointer; /* Show a pointer cursor */
+            z-index: 10000; /* Ensure it's above other content */
         }
-        
+
         /* Adjust hamburger lines for better visibility and spacing */
         .hamburger-menu .line {
             width: 30px; /* Width of each line */
             height: 3px; /* Height of each line */
             background-color: white; /* Color of each line */
-            margin: 5px; /* Spacing between lines */
+            margin: 5px 0; /* Spacing between lines */
+            transition: transform 0.3s, opacity 0.3s; /* Smooth transition */
         }
+
+        .hamburger-menu.active .line {
+            opacity: 0; /* Hide the lines when active */
+        }
+
     
         /* Hide the regular navigation links */
         .nav-links {
@@ -249,33 +271,37 @@
     
         /* When the navigation is active, show the links vertically */
         .nav-links.nav-active {
-            display: block;
-            position: absolute;
-            top: 70px; /* Adjust as needed */
-            left: 0; 
-            background-color: #141414;
+            display: block; /* Show the close button when the active class is added */
+            position: fixed; /* Fixed position to cover the whole screen */
+            top: 0;
+            left: 0;
+            background-color: #141414; /* Match the header background */
             width: 100%;
+            height: 100vh; /* Full viewport height to ensure no cropping */
             padding: 20px;
             box-sizing: border-box;
-        }
+            z-index: 9999; /* Ensure the menu is above other content */
+            overflow-y: auto; /* Enable scrolling if menu content exceeds viewport height */
+        }     
     
         /* Style individual navigation links */
         .nav-links.nav-active li {
             margin-bottom: 10px;
-        }
-    
-        .nav-links.nav-active li ul {
-            position: relative;
-            left: 30%;
+            text-align: center; /* Center align text for better appearance */
         }
 
-        .nav-links.nav-active + .close-btn {
+        .nav-active .close-btn {
+            display: block; /* Visible when nav is active */
+        }
+
+        header .hamburger-menu.active ~ .close-btn {
             display: block;
         }
-    
+            
         .flex-container{
             flex-direction: column; /* Change to column layout for smaller screens */
         }
+        
         /* CSS rules for smaller screens */
         footer {
             flex-direction: column;
@@ -284,6 +310,18 @@
         header {
             height: 70px; /* Fixed height to prevent resizing */
             overflow: hidden; /* Ensure no content overflows */
+            padding: 10px;
         }
+
+        .logo img {
+            max-width: 120px; /* Smaller logo */
+            height: auto;     /* Maintain aspect ratio */
+        }
+
+        /* Prevent the main content from overflowing under the menu */
+        body.menu-open {
+            overflow: hidden; /* Disable scrolling on the body when the menu is open */
+        }
+             
     }
     
